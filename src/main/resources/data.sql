@@ -1,13 +1,4 @@
-create extension if not exists "uuid-ossp";
-
--- Enable UUID support
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
--- Timezones
-INSERT INTO TIMEZONES (name, utc_offset) VALUES
-  ('Asia/Tashkent', '+05:00'),
-  ('Europe/Berlin', '+01:00'),
-  ('Asia/Kolkata', '+05:30');
 
 -- Roles
 INSERT INTO ROLES (name) VALUES
@@ -26,13 +17,13 @@ INSERT INTO SKILLS (title) VALUES
   ('Data Analysis');
 
 -- Users
-INSERT INTO USERS (name, email, password, timezone_id)
+INSERT INTO USERS (name, email, password)
 VALUES
-  ('Alice', 'alice@example.com', 'hashedpass1', (SELECT id FROM timezones WHERE name = 'Asia/Tashkent')),
-  ('Bob', 'bob@example.com', 'hashedpass2', (SELECT id FROM timezones WHERE name = 'Europe/Berlin')),
-  ('Charlie', 'charlie@example.com', 'hashedpass3', (SELECT id FROM timezones WHERE name = 'Asia/Kolkata')),
-  ('Diana', 'diana@example.com', 'hashedpass4', (SELECT id FROM timezones WHERE name = 'Asia/Tashkent')),
-  ('Eve', 'eve@example.com', 'hashedpass5', (SELECT id FROM timezones WHERE name = 'Asia/Kolkata'));
+  ('Alice', 'alice@example.com', 'hashedpass1'),
+  ('Bob', 'bob@example.com', 'hashedpass2'),
+  ('Charlie', 'charlie@example.com', 'hashedpass3'),
+  ('Diana', 'diana@example.com', 'hashedpass4'),
+  ('Eve', 'eve@example.com', 'hashedpass5');
 
 -- User Roles
 INSERT INTO USER_ROLES (user_id, role_id)

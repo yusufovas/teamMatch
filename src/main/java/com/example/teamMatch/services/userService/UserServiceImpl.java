@@ -3,12 +3,10 @@ package com.example.teamMatch.services.userService;
 import com.example.teamMatch.dto.UserDto;
 import com.example.teamMatch.model.Roles;
 import com.example.teamMatch.model.Skills;
-import com.example.teamMatch.model.Timezones;
 import com.example.teamMatch.model.Users;
-import com.example.teamMatch.repositories.TimezoneRepository;
 import com.example.teamMatch.repositories.UserRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +16,11 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final TimezoneRepository timezoneRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    UserServiceImpl(UserRepository userRepository, TimezoneRepository timezoneRepository) {
+    UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.timezoneRepository = timezoneRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -32,25 +30,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Users addUser(String name, String email, String password, String timezoneName) {
-        Timezones timezone = timezoneRepository.findByName(timezoneName)
-                .orElseThrow(() -> new RuntimeException("Timezone not found: " + timezoneName));
-
-        if(userRepository.existsByEmail(email)) {
+    public Users addUser(UserDto userDto) {
+       if(userRepository.existsByEmail(userDto.getEmail())) {
             throw new RuntimeException("Email already registered");
         }
 
         Users user = new Users();
-        user.setName(name);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setTimezone(timezone);
+        user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         return userRepository.save(user);
     }
 
     @Override
-    public Users register(String name, String email, String password, String timezone) { return null; }
+    public Users register(UserDto userDto) {
+        Users user = new Users();
+
+        user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
+
+        String hashedPassword = passwordEncoder.encode(userDto.getPassword());
+        user.setPassword(hashedPassword);
+
+        return userRepository.save(user);
+    }
 
     @Override
     public String login(String email, String password) {
@@ -90,11 +94,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Users findByName(String name) {
         return null;
-    }
-
-    @Override
-    public List<Users> findByTimezone(String timezone) {
-        return List.of();
     }
 
     @Override

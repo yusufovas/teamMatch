@@ -1,11 +1,8 @@
 package com.example.teamMatch.dto;
 
-import com.example.teamMatch.model.Timezones;
 import com.example.teamMatch.model.Users;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-
-import java.util.UUID;
 
 public class UserDto {
     @NotBlank
@@ -18,16 +15,12 @@ public class UserDto {
     @NotBlank
     private String password;
 
-    @NotBlank
-    private String timezoneName;
-
     public UserDto() { }
 
     public UserDto(Users user) {
         this.name = user.getName();
         this.email = user.getEmail();
         this.password = user.getPassword();
-        this.timezoneName = user.getTimezone().getName();
     }
 
     public String getName() {
@@ -52,13 +45,5 @@ public class UserDto {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getTimezoneName() {
-        return timezoneName;
-    }
-
-    public void setTimezoneName(String timezoneName) {
-        this.timezoneName = timezoneName;
     }
 }

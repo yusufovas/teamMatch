@@ -23,10 +23,6 @@ public class Users {
     @Column(nullable = false)
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "timezone_id")
-    private Timezones timezone;
-
     @ManyToMany
     @JoinTable(
             name = "user_roles",
@@ -73,13 +69,5 @@ public class Users {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Timezones getTimezone() {
-        return timezone;
-    }
-
-    public void setTimezone(Timezones timezone) {
-        this.timezone = timezone;
     }
 }

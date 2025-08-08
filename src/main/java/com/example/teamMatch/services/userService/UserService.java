@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
-    Users register(String name, String email, String password, String timezone);
+    Users register(UserDto userDto);
     String login(String email, String password);
     boolean updatePassword(UUID userId, String oldPassword, String newPassword);
 
-    Users addUser(String name, String email, String password, String timezoneName);
+    Users addUser(UserDto userDto);
     Users updateUser(UUID userId, String oldName, String newName, String oldEmail, String newEmail);
     Users deleteUser(UUID userId);
     List<Users> searchUsersBySkill(String skillName);
@@ -21,7 +21,6 @@ public interface UserService {
 
     Users findByEmail(String email);
     Users findByName(String name);
-    List<Users> findByTimezone(String timezone);
     Users findById(UUID id);
     boolean existsByEmail(String email);
     List<Users> getAllUsers();
