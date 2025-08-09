@@ -3,7 +3,7 @@ package com.example.teamMatch.controllers;
 import com.example.teamMatch.dto.UserDto;
 import com.example.teamMatch.dto.UserResponseDto;
 import com.example.teamMatch.model.Users;
-import com.example.teamMatch.services.userService.UserService;
+import com.example.teamMatch.services.users.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

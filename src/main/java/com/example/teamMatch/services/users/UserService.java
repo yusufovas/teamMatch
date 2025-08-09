@@ -1,5 +1,6 @@
-package com.example.teamMatch.services.userService;
+package com.example.teamMatch.services.users;
 
+import com.example.teamMatch.dto.UpdateUserDto;
 import com.example.teamMatch.dto.UserDto;
 import com.example.teamMatch.model.Roles;
 import com.example.teamMatch.model.Skills;
@@ -9,21 +10,16 @@ import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
-    Users register(UserDto userDto);
-    String login(String email, String password);
-    boolean updatePassword(UUID userId, String oldPassword, String newPassword);
 
+    List<Users> getAllUsers();
     Users addUser(UserDto userDto);
-    Users updateUser(UUID userId, String oldName, String newName, String oldEmail, String newEmail);
+    Users updateUser(UUID userId, UpdateUserDto updateUserDto);
     Users deleteUser(UUID userId);
-    List<Users> searchUsersBySkill(String skillName);
-    List<Roles> searchUsersByRole(String roleName);
 
     Users findByEmail(String email);
     Users findByName(String name);
     Users findById(UUID id);
     boolean existsByEmail(String email);
-    List<Users> getAllUsers();
 
     boolean assignRoleToUser(UUID userId, UUID roleId);
     boolean removeRoleFromUser(UUID userId, UUID roleId);

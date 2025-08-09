@@ -1,5 +1,6 @@
-package com.example.teamMatch.services.userService;
+package com.example.teamMatch.services.users;
 
+import com.example.teamMatch.dto.UpdateUserDto;
 import com.example.teamMatch.dto.UserDto;
 import com.example.teamMatch.model.Roles;
 import com.example.teamMatch.model.Skills;
@@ -44,46 +45,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Users register(UserDto userDto) {
-        Users user = new Users();
-
-        user.setName(userDto.getName());
-        user.setEmail(userDto.getEmail());
-
-        String hashedPassword = passwordEncoder.encode(userDto.getPassword());
-        user.setPassword(hashedPassword);
-
-        return userRepository.save(user);
-    }
-
-    @Override
-    public String login(String email, String password) {
-        return "";
-    }
-
-    @Override
-    public boolean updatePassword(UUID userId, String oldPassword, String newPassword) {
-        return false;
-    }
-
-    @Override
-    public Users updateUser(UUID userId, String oldName, String newName, String oldEmail, String newEmail) {
+    public Users updateUser(UUID userId, UpdateUserDto updateUserDto) {
         return null;
     }
 
     @Override
     public Users deleteUser(UUID userId) {
         return null;
-    }
-
-    @Override
-    public List<Users> searchUsersBySkill(String skillName) {
-        return List.of();
-    }
-
-    @Override
-    public List<Roles> searchUsersByRole(String roleName) {
-        return List.of();
     }
 
     @Override

@@ -1,38 +1,36 @@
 package com.example.teamMatch.controllers;
 
+import com.example.teamMatch.dto.LoginDto;
 import com.example.teamMatch.dto.UserDto;
-import com.example.teamMatch.dto.UserResponseDto;
-import com.example.teamMatch.model.Users;
-import com.example.teamMatch.services.userService.UserService;
+import com.example.teamMatch.services.auth.AuthService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserService userService;
+    private final AuthService authService;
 
-    public AuthController(UserService userService) {
-        this.userService = userService;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserResponseDto> signup(@Valid @RequestBody UserDto userDto) {
-        Users savedUser = userService.register(userDto);
+    public ResponseEntity<Map<String, String>> signup(@Valid @RequestBody UserDto userDto) {
+        return ResponseEntity.ok(authService.signup(userDto));
+    }
 
-        UserResponseDto responseDto = new UserResponseDto(
-                savedUser.getId(),
-                savedUser.getName(),
-                savedUser.getEmail()
-        );
-
-        return ResponseEntity.ok(responseDto);
+    @PostMapping("/signin")
+    public ResponseEntity<Map<String, String>> signin(@RequestBody LoginDto loginDto) {
+        String token = authService.signin(loginDto);
+        return ResponseEntity.ok(Collections.singletonMap("token", token));
     }
 }
