@@ -3,8 +3,12 @@ package com.example.teamMatch.dto;
 import com.example.teamMatch.model.Users;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import java.util.UUID;
 
 public class UserDto {
+
+    private UUID id;
+
     @NotBlank
     private String name;
 
@@ -18,10 +22,13 @@ public class UserDto {
     public UserDto() { }
 
     public UserDto(Users user) {
+        this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();
         this.password = user.getPassword();
     }
+
+    public UUID getId() { return id;}
 
     public String getName() {
         return name;

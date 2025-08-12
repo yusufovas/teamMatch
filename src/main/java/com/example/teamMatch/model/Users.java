@@ -51,10 +51,6 @@ public class Users {
         return id;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
     public String getEmail() {
         return email;
     }

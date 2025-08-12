@@ -2,6 +2,9 @@ package com.example.teamMatch.services.users;
 
 import com.example.teamMatch.dto.UpdateUserDto;
 import com.example.teamMatch.dto.UserDto;
+import com.example.teamMatch.exception.IncorrectPasswordException;
+import com.example.teamMatch.exception.OldDataMismatchException;
+import com.example.teamMatch.exception.UserNotFoundException;
 import com.example.teamMatch.model.Roles;
 import com.example.teamMatch.model.Skills;
 import com.example.teamMatch.model.Users;
@@ -45,13 +48,50 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Users updateUser(UUID userId, UpdateUserDto updateUserDto) {
-        return null;
+    public Users updateUser(UUID userIdFromToken, UpdateUserDto updateUserDto) {
+
+        Users user = userRepository.findById(userIdFromToken)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        userRepository.findByEmailIgnoreCase(updateUserDto.getEmail())
+                .ifPresent(existingUser -> {
+                    if (!existingUser.getId().equals(userIdFromToken)) {
+                        throw new UserNotFoundException("Ids do not match");
+                    }
+                });
+
+
+        if(!passwordEncoder.matches(updateUserDto.getPassword(), user.getPassword())) {
+            throw new IncorrectPasswordException("Old password is incorrect");
+        }
+
+        if(updateUserDto.getName() != null && !updateUserDto.getName().isBlank()) {
+            user.setName(updateUserDto.getName());
+        }
+
+        if(updateUserDto.getEmail() != null || !updateUserDto.getEmail().isBlank()) {
+            user.setEmail(updateUserDto.getEmail());
+        }
+
+        if(updateUserDto.getPassword() != null || !updateUserDto.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(updateUserDto.getPassword()));
+        }
+
+        return userRepository.save(user);
     }
 
     @Override
     public Users deleteUser(UUID userId) {
-        return null;
+
+        Users user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        if (!user.getId().equals(userId)) {
+            throw new UserNotFoundException("Ids do not match");
+        };
+
+        userRepository.delete(user);
+        return user;
     }
 
     @Override
