@@ -19,9 +19,11 @@ public interface UserRepository extends JpaRepository<Users, UUID> {
     @Query("SELECT DISTINCT u FROM Users u LEFT JOIN FETCH u.roles LEFT JOIN FETCH u.skills WHERE LOWER(u.name) = LOWER(:name)")
     List<Users> findByNameIgnoreCase(@Param("name") String name);
 
-    @Query("SELECT u FROM Users u JOIN FETCH u.roles WHERE u.id = :userId")
+    @Query("SELECT u FROM Users u LEFT JOIN FETCH u.roles WHERE u.id = :userId")
     Optional<Users> findByIdWithRoles(@Param("userId") UUID userId);
 
     boolean existsByEmail(String email);
 
+    @Query("SELECT u FROM Users u LEFT JOIN FETCH u.skills WHERE u.id = :userId")
+    Optional<Users> findByIdWithSkills(@Param("userId") UUID userId);
 }

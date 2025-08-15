@@ -4,10 +4,10 @@ import com.example.teamMatch.model.Skills;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface SkillsRepository extends JpaRepository<Skills, UUID> {
-    Optional<Skills> findByTitle(String title);
+    List<Skills> findByTitleIn(List<String> upperCaseTitles);
 }

@@ -1,6 +1,8 @@
 package com.example.teamMatch.controllers;
 
 import com.example.teamMatch.components.JwtUtils;
+import com.example.teamMatch.dto.role.RoleIdDto;
+import com.example.teamMatch.dto.skill.SkillIdDto;
 import com.example.teamMatch.dto.user.*;
 import com.example.teamMatch.model.Roles;
 import com.example.teamMatch.model.Users;
@@ -102,17 +104,58 @@ public class UserController {
     }
 
     @GetMapping("/get-user-roles")
-    public ResponseEntity<List<String>>  getUserRoles(@RequestParam UUID userId) {
+    public ResponseEntity<List<String>> getUserRoles(@RequestParam UUID userId) {
         List<String> roles = userService.getUserRoles(userId);
-        if(roles.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
         return ResponseEntity.ok(roles);
     }
 
     @PostMapping("/set-user-role")
-    public ResponseEntity<Roles> setUserRoles(@RequestBody List<String> role) {
-        return null;
+    public ResponseEntity<String> setUserRoles(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody List<String> roleTitles
+    ) {
+        String token = authHeader.replace("Bearer ", "");
+        UUID userIdFromToken = jwtUtility.getUserIdFromToken(token);
+
+        return userService.assignRoleToUser(userIdFromToken, roleTitles);
+    }
+
+    @DeleteMapping("/delete-user-role")
+    public ResponseEntity<String> deleteUserRole(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody RoleIdDto request) {
+
+        String token = authHeader.replace("Bearer ", "");
+        UUID userIdFromToken = jwtUtility.getUserIdFromToken(token);
+
+        return userService.removeRoleFromUser(userIdFromToken, request.getRoleId());
+    }
+
+    @GetMapping("/get-user-skill")
+    public ResponseEntity<List<String>> getUserSkills(@RequestParam UUID userId) {
+        List<String> skills = userService.getUserSkills(userId);
+        return ResponseEntity.ok(skills);
+    }
+
+    @PostMapping("/set-user-skill")
+    public ResponseEntity<String> setUserSkills(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody List<String> skillTitles
+    ) {
+        String token = authHeader.replace("Bearer ", "");
+        UUID userIdFromToken = jwtUtility.getUserIdFromToken(token);
+
+        return userService.assignSkillToUser(userIdFromToken, skillTitles);
+    }
+
+    @DeleteMapping("/delete-user-skill")
+    public ResponseEntity<String> deleteUserSkill(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody SkillIdDto request) {
+
+        String token = authHeader.replace("Bearer ", "");
+        UUID userIdFromToken = jwtUtility.getUserIdFromToken(token);
+
+        return userService.removeSkillFromUser(userIdFromToken, request.getSkillId());
     }
 }

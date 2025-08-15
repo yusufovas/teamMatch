@@ -9,6 +9,7 @@ import com.example.teamMatch.model.Roles;
 import com.example.teamMatch.model.Skills;
 import com.example.teamMatch.model.Users;
 import com.example.teamMatch.repositories.RolesRepository;
+import com.example.teamMatch.repositories.SkillsRepository;
 import com.example.teamMatch.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -16,10 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.Role;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -27,11 +25,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RolesRepository rolesRepository;
+    private final SkillsRepository skillsRepository;
 
-    UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RolesRepository rolesRepository) {
+    UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RolesRepository rolesRepository, SkillsRepository skillsRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.rolesRepository = rolesRepository;
+        this.skillsRepository = skillsRepository;
     }
 
     @Override
@@ -140,22 +140,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<String> assignRoleToUser(UUID userId, UUID roleId) {
-        Optional<Users> userOpt = userRepository.findById(userId);
-        Optional<Roles> roleOpt = rolesRepository.findById(roleId);
+    public ResponseEntity<String> assignRoleToUser(UUID userId, List<String> roleTitles) {
+        Users user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User with this id does not exist " + userId));
 
-        if (userOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("User not found");
-        }
-        if (roleOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("Role not found");
+        List<String> upperCaseTitles = roleTitles.stream()
+                .map(String::toUpperCase)
+                .distinct()
+                .toList();
+
+        List<Roles> roles = rolesRepository.findByNameIn(upperCaseTitles);
+
+        if (roles.size() != upperCaseTitles.size()) {
+            return ResponseEntity.badRequest().body("Some roles were not found");
         }
 
-        Users user = userOpt.get();
-        user.getRoles().add(roleOpt.get());
+        user.getRoles().addAll(roles);
         userRepository.save(user);
 
-        return ResponseEntity.ok("Role assigned successfully");
+        return ResponseEntity.ok("Roles assigned successfully");
     }
 
     @Override
@@ -164,7 +167,7 @@ public class UserServiceImpl implements UserService {
         Optional<Roles> roleOpt = rolesRepository.findById(roleId);
 
         if (userOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("User not found");
+            throw new UserNotFoundException("User not found " + userId);
         }
         if (roleOpt.isEmpty()) {
             return ResponseEntity.badRequest().body("Role not found");
@@ -192,17 +195,57 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String assignSkillToUser(UUID userId, UUID roleId) {
-        return "";
+    public ResponseEntity<String> assignSkillToUser(UUID userId, List<String> skillTitles) {
+        Users user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User with this id does not exist " + userId));
+
+        List<String> upperCaseTitles = skillTitles.stream()
+                .map(String::toUpperCase)
+                .distinct()
+                .toList();
+
+        List<Skills> skills = skillsRepository.findByTitleIn(upperCaseTitles);
+
+        if (skills.size() != upperCaseTitles.size()) {
+            return ResponseEntity.badRequest().body("Some roles were not found");
+        }
+
+        user.getSkills().addAll(skills);
+        userRepository.save(user);
+
+        return ResponseEntity.ok("Skills assigned successfully");
     }
 
     @Override
-    public String removeSkillFromUser(UUID userId, UUID roleId) {
-        return "";
+    public ResponseEntity<String> removeSkillFromUser(UUID userId, UUID skillId) {
+        Optional<Users> userOpt = userRepository.findById(userId);
+        Optional<Skills> skillsOpt = skillsRepository.findById(skillId);
+
+        if (userOpt.isEmpty()) {
+            throw new UserNotFoundException("User not found " + userId);
+        }
+        if (skillsOpt.isEmpty()) {
+            return ResponseEntity.badRequest().body("Skill not found");
+        }
+
+        Users user = userOpt.get();
+        boolean removed = user.getSkills().remove(skillsOpt.get());
+
+        if (!removed) {
+            return ResponseEntity.badRequest().body("User did not have this skill");
+        }
+
+        userRepository.save(user);
+        return ResponseEntity.ok("Skill removed successfully");
     }
 
     @Override
-    public List<Skills> getUserSkills(UUID userId) {
-        return List.of();
+    public List<String> getUserSkills(UUID userId) {
+        return userRepository.findByIdWithSkills(userId)
+                .map(user -> user.getSkills()
+                        .stream()
+                        .map(Skills::getTitle)
+                        .toList())
+                .orElseThrow(() -> new EntityNotFoundException("user not found"));
     }
 }

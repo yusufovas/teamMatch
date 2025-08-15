@@ -8,6 +8,7 @@ import com.example.teamMatch.model.Users;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public interface UserService {
@@ -21,11 +22,11 @@ public interface UserService {
     List<UserDto> findByName(String name);
     Users findById(UUID id);
 
-    ResponseEntity<String> assignRoleToUser(UUID userId, UUID roleId);
+    ResponseEntity<String> assignRoleToUser(UUID userId, List<String> roleTitles);
     ResponseEntity<String> removeRoleFromUser(UUID userId, UUID roleId);
     List<String> getUserRoles(UUID userId);
-    String assignSkillToUser(UUID userId, UUID roleId);
-    String removeSkillFromUser(UUID userId, UUID roleId);
-    List<Skills> getUserSkills(UUID userId);
+    ResponseEntity<String> assignSkillToUser(UUID userId, List<String> skillTitles);
+    ResponseEntity<String> removeSkillFromUser(UUID userId, UUID skillId);
+    List<String> getUserSkills(UUID userId);
 
 }
