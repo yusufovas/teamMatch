@@ -1,56 +1,39 @@
-package com.example.teamMatch.dto;
+package com.example.teamMatch.dto.user;
 
 import com.example.teamMatch.model.Users;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+
+import java.util.List;
 import java.util.UUID;
 
-public class UserDto {
+public class UserResponseDto {
 
     private UUID id;
-
-    @NotBlank
     private String name;
-
-    @Email
-    @NotBlank
     private String email;
-
-    @NotBlank
     private String password;
 
-    public UserDto() { }
 
-    public UserDto(Users user) {
+    public UserResponseDto() { }
+
+    public UserResponseDto(Users user) {
         this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();
         this.password = user.getPassword();
+        List<String> skills;
+        List<String> teamRoles;
     }
-
     public UUID getId() { return id;}
-
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
+    public CharSequence getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

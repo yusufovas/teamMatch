@@ -1,4 +1,4 @@
-package com.example.teamMatch.services.users;
+package com.example.teamMatch.config;
 
 import com.example.teamMatch.model.Users;
 import com.example.teamMatch.repositories.UserRepository;

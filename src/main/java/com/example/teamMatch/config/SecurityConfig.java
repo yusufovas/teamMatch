@@ -1,7 +1,6 @@
 package com.example.teamMatch.config;
 
 import com.example.teamMatch.repositories.UserRepository;
-import com.example.teamMatch.services.users.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

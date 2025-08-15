@@ -1,4 +1,4 @@
-package com.example.teamMatch.dto;
+package com.example.teamMatch.dto.auth;
 
 
 public class LoginDto {

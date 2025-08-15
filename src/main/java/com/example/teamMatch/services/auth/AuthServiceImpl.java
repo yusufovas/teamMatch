@@ -1,9 +1,8 @@
 package com.example.teamMatch.services.auth;
 
 import com.example.teamMatch.components.JwtUtils;
-import com.example.teamMatch.components.JwtUtils;
-import com.example.teamMatch.dto.LoginDto;
-import com.example.teamMatch.dto.UserDto;
+import com.example.teamMatch.dto.auth.LoginDto;
+import com.example.teamMatch.dto.user.UserResponseDto;
 import com.example.teamMatch.exception.UserAlreadyExistsException;
 import com.example.teamMatch.exception.UserNotFoundException;
 import com.example.teamMatch.model.Users;
@@ -35,23 +34,23 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public Map<String, String> signup(UserDto userDto) {
+    public Map<String, String> signup(UserResponseDto userResponseDto) {
         Users user = new Users();
 
-        if(userRepository.existsByEmail(userDto.getEmail())) {
+        if(userRepository.existsByEmail(userResponseDto.getEmail())) {
             throw new UserAlreadyExistsException("User with this email was registered before");
         }
 
-        user.setName(userDto.getName());
-        user.setEmail(userDto.getEmail());
+        user.setName(userResponseDto.getName());
+        user.setEmail(userResponseDto.getEmail());
 
-        String hashedPassword = passwordEncoder.encode(userDto.getPassword());
+        String hashedPassword = passwordEncoder.encode(userResponseDto.getPassword());
         user.setPassword(hashedPassword);
 
         userRepository.save(user);
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword())
+                new UsernamePasswordAuthenticationToken(userResponseDto.getEmail(), userResponseDto.getPassword())
         );
 
         String token = jwtUtility.generateToken((UserDetails) authentication.getPrincipal(), user.getId());

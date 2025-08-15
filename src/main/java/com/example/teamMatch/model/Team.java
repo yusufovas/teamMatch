@@ -2,6 +2,7 @@ package com.example.teamMatch.model;
 
 
 import com.example.teamMatch.enums.TeamStatusEnum;
+import com.example.teamMatch.model.join.TeamMembers;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.example.teamMatch.model;
+package com.example.teamMatch.model.join;
 
 import java.io.Serializable;
 import java.util.Objects;

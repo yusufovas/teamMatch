@@ -1,7 +1,6 @@
 package com.example.teamMatch.config;
 
 import com.example.teamMatch.components.JwtUtils;
-import com.example.teamMatch.services.users.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

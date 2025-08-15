@@ -1,7 +1,8 @@
-package com.example.teamMatch.model;
+package com.example.teamMatch.model.join;
 
+import com.example.teamMatch.model.Skills;
+import com.example.teamMatch.model.Users;
 import jakarta.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Table(name = "user_skills")
@@ -18,5 +19,4 @@ public class UserSkills {
     @JoinColumn(name = "skill_id")
     private Skills skill;
 
-    // Optional: add extra fields like proficiency or years if needed
 }

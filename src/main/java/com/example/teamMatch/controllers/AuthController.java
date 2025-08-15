@@ -1,7 +1,7 @@
 package com.example.teamMatch.controllers;
 
-import com.example.teamMatch.dto.LoginDto;
-import com.example.teamMatch.dto.UserDto;
+import com.example.teamMatch.dto.auth.LoginDto;
+import com.example.teamMatch.dto.user.UserResponseDto;
 import com.example.teamMatch.services.auth.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +24,8 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Map<String, String>> signup(@Valid @RequestBody UserDto userDto) {
-        return ResponseEntity.ok(authService.signup(userDto));
+    public ResponseEntity<Map<String, String>> signup(@Valid @RequestBody UserResponseDto userResponseDto) {
+        return ResponseEntity.ok(authService.signup(userResponseDto));
     }
 
     @PostMapping("/signin")

@@ -1,6 +1,9 @@
-package com.example.teamMatch.model;
+package com.example.teamMatch.model.join;
 
 
+import com.example.teamMatch.model.Roles;
+import com.example.teamMatch.model.Team;
+import com.example.teamMatch.model.Users;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

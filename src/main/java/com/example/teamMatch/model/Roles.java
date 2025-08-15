@@ -1,6 +1,5 @@
 package com.example.teamMatch.model;
 
-
 import jakarta.persistence.*;
 
 import java.util.UUID;

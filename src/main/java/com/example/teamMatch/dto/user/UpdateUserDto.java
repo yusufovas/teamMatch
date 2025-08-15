@@ -1,4 +1,4 @@
-package com.example.teamMatch.dto;
+package com.example.teamMatch.dto.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;

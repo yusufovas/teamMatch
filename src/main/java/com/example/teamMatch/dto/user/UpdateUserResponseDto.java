@@ -1,13 +1,17 @@
-package com.example.teamMatch.dto;
+package com.example.teamMatch.dto.user;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 
 import java.util.UUID;
 
-public class AddUserResponseDto {
+public class UpdateUserResponseDto {
+
     private UUID id;
     private String name;
     private String email;
 
-    public AddUserResponseDto(UUID id, String name, String email) {
+    public UpdateUserResponseDto(UUID id, String name, String email) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -21,7 +25,5 @@ public class AddUserResponseDto {
         return name;
     }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() { return email; }
 }
