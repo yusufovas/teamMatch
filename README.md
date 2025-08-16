@@ -10,11 +10,7 @@ A Spring Boot application for managing teams, team members, and join requests. H
 - [Database Schema](#database-schema)
 - [Entities](#entities)
 - [Endpoints](#endpoints)
-    - [Teams](#teams)
-    - [Team Members](#team-members)
-    - [Team Join Requests](#team-join-requests)
-- [DTOs](#dtos)
-
+- [OpenApi](#openApi)
 ---
 
 ### **Tech Stack**
@@ -275,4 +271,7 @@ DB View after:
    Request and Response Example  
 
 ![join request status update](src/main/resources/static/images/img_34.png)
+
+## **OpenApi**
+![OpenAPi](src/main/resources/static/images/openApi.png)
 
