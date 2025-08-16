@@ -3,17 +3,15 @@ package com.example.teamMatch.services.users;
 import com.example.teamMatch.dto.user.UpdateUserDto;
 import com.example.teamMatch.dto.user.UserDto;
 import com.example.teamMatch.dto.user.UserResponseDto;
-import com.example.teamMatch.model.Skills;
 import com.example.teamMatch.model.Users;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public interface UserService {
 
-    List<Users> getAllUsers();
+    List<UserDto> getAllUsers();
     Users addUser(UserResponseDto userResponseDto);
     Users updateUser(UUID userId, UpdateUserDto updateUserDto);
     void deleteUser(UUID userId);

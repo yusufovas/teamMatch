@@ -31,12 +31,8 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserResponseDto> getAllUsers() {
-        return userService.getAllUsers()
-                .stream()
-                .map(UserResponseDto::new)
-                .collect(Collectors.toList());
-
+    public List<UserDto> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @PostMapping

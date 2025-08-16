@@ -4,7 +4,7 @@ import com.example.teamMatch.components.JwtUtils;
 import com.example.teamMatch.dto.auth.LoginDto;
 import com.example.teamMatch.dto.user.UserResponseDto;
 import com.example.teamMatch.exception.UserAlreadyExistsException;
-import com.example.teamMatch.exception.UserNotFoundException;
+import com.example.teamMatch.exception.NotFoundException;
 import com.example.teamMatch.model.Users;
 import com.example.teamMatch.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -67,7 +67,7 @@ public class AuthServiceImpl implements AuthService{
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         Users user = userRepository.findByEmailIgnoreCase(loginDto.getEmail())
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
 
         return jwtUtility.generateToken((UserDetails) authentication.getPrincipal(), user.getId());

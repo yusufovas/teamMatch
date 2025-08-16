@@ -1,11 +1,8 @@
 package com.example.teamMatch.model;
 
-
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 public class Users {
@@ -38,6 +35,9 @@ public class Users {
             inverseJoinColumns = @JoinColumn(name = "skill_id")
     )
     private Set<Skills> skills = new HashSet<>();
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Team> teams = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -81,5 +81,13 @@ public class Users {
 
     public void setSkills(Set<Skills> skills) {
         this.skills = skills;
+    }
+
+    public List<Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
     }
 }

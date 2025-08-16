@@ -1,12 +1,16 @@
 package com.example.teamMatch.services.users;
 
+import com.example.teamMatch.dto.role.RoleIdDto;
+import com.example.teamMatch.dto.skill.SkillIdDto;
+import com.example.teamMatch.dto.team.TeamIdDto;
 import com.example.teamMatch.dto.user.UpdateUserDto;
 import com.example.teamMatch.dto.user.UserResponseDto;
 import com.example.teamMatch.dto.user.UserDto;
-import com.example.teamMatch.exception.UserNotFoundException;
+import com.example.teamMatch.exception.NotFoundException;
 import com.example.teamMatch.exception.ValidationException;
 import com.example.teamMatch.model.Roles;
 import com.example.teamMatch.model.Skills;
+import com.example.teamMatch.model.Team;
 import com.example.teamMatch.model.Users;
 import com.example.teamMatch.repositories.RolesRepository;
 import com.example.teamMatch.repositories.SkillsRepository;
@@ -35,8 +39,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Users> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(user -> new UserDto(
+                        user.getId(),
+                        user.getName(),
+                        user.getEmail(),
+                        user.getRoles().stream()
+                                .map(role -> new RoleIdDto(role.getId(), role.getName()))
+                                .toList(),
+                        user.getSkills().stream()
+                                .map(skill -> new SkillIdDto(skill.getId(), skill.getTitle()))
+                                .toList(),
+                        user.getTeams().stream()
+                                .map(Team::getName)
+                                .toList()
+                ))
+                .toList();
     }
 
     @Override
@@ -58,12 +77,12 @@ public class UserServiceImpl implements UserService {
     public Users updateUser(UUID userIdFromToken, UpdateUserDto updateUserDto) {
 
         Users user = userRepository.findById(userIdFromToken)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         userRepository.findByEmailIgnoreCase(updateUserDto.getEmail())
                 .ifPresent(existingUser -> {
                     if (!existingUser.getId().equals(userIdFromToken)) {
-                        throw new UserNotFoundException("Ids do not match");
+                        throw new NotFoundException("Ids do not match");
                     }
                 });
 
@@ -91,10 +110,10 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(UUID userId) {
 
         Users user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         if (!user.getId().equals(userId)) {
-            throw new UserNotFoundException("Ids do not match");
+            throw new NotFoundException("Ids do not match");
         };
 
         userRepository.delete(user);
@@ -103,14 +122,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto findByEmail(String email) {
         Users user = userRepository.findByEmailIgnoreCase(email)
-                .orElseThrow(() -> new UserNotFoundException("User with this email not found " + email));
+                .orElseThrow(() -> new NotFoundException("User with this email not found " + email));
 
         return new UserDto(
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
-                user.getRoles().stream().map(Roles::getName).toList(),
-                user.getSkills().stream().map(Skills::getTitle).toList()
+                user.getRoles().stream()
+                        .map(role -> new RoleIdDto(role.getId(), role.getName()))
+                        .toList(),
+                user.getSkills().stream()
+                        .map(skill -> new SkillIdDto(skill.getId(), skill.getTitle()))
+                        .toList(),
+                user.getTeams().stream()
+                        .map(Team::getName)
+                        .toList()
         );
     }
 
@@ -119,7 +145,7 @@ public class UserServiceImpl implements UserService {
         List<Users> users = userRepository.findByNameIgnoreCase(name);
 
         if (users.isEmpty()) {
-            throw new UserNotFoundException("User with this name not found " + name);
+            throw new NotFoundException("User with this name not found " + name);
         }
 
         return users.stream()
@@ -127,22 +153,28 @@ public class UserServiceImpl implements UserService {
                         user.getId(),
                         user.getName(),
                         user.getEmail(),
-                        user.getRoles().stream().map(Roles::getName).toList(),
-                        user.getSkills().stream().map(Skills::getTitle).toList()
-                ))
+                        user.getRoles().stream()
+                                .map(role -> new RoleIdDto(role.getId(), role.getName()))
+                                .toList(),
+                        user.getSkills().stream()
+                                .map(skill -> new SkillIdDto(skill.getId(), skill.getTitle()))
+                                        .toList(),
+                        user.getTeams().stream()
+                                .map(Team::getName)
+                                .toList()))
                 .toList();
     }
 
     @Override
     public Users findById(UUID id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User with this id not found " + id));
+                .orElseThrow(() -> new NotFoundException("User with this id not found " + id));
     }
 
     @Override
     public ResponseEntity<String> assignRoleToUser(UUID userId, List<String> roleTitles) {
         Users user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User with this id does not exist " + userId));
+                .orElseThrow(() -> new NotFoundException("User with this id does not exist " + userId));
 
         List<String> upperCaseTitles = roleTitles.stream()
                 .map(String::toUpperCase)
@@ -167,7 +199,7 @@ public class UserServiceImpl implements UserService {
         Optional<Roles> roleOpt = rolesRepository.findById(roleId);
 
         if (userOpt.isEmpty()) {
-            throw new UserNotFoundException("User not found " + userId);
+            throw new NotFoundException("User not found " + userId);
         }
         if (roleOpt.isEmpty()) {
             return ResponseEntity.badRequest().body("Role not found");
@@ -197,7 +229,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<String> assignSkillToUser(UUID userId, List<String> skillTitles) {
         Users user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User with this id does not exist " + userId));
+                .orElseThrow(() -> new NotFoundException("User with this id does not exist " + userId));
 
         List<String> upperCaseTitles = skillTitles.stream()
                 .map(String::toUpperCase)
@@ -222,7 +254,7 @@ public class UserServiceImpl implements UserService {
         Optional<Skills> skillsOpt = skillsRepository.findById(skillId);
 
         if (userOpt.isEmpty()) {
-            throw new UserNotFoundException("User not found " + userId);
+            throw new NotFoundException("User not found " + userId);
         }
         if (skillsOpt.isEmpty()) {
             return ResponseEntity.badRequest().body("Skill not found");
