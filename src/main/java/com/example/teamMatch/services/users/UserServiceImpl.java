@@ -6,6 +6,7 @@ import com.example.teamMatch.dto.team.TeamIdDto;
 import com.example.teamMatch.dto.user.UpdateUserDto;
 import com.example.teamMatch.dto.user.UserResponseDto;
 import com.example.teamMatch.dto.user.UserDto;
+import com.example.teamMatch.exception.AlreadyExistsException;
 import com.example.teamMatch.exception.NotFoundException;
 import com.example.teamMatch.exception.ValidationException;
 import com.example.teamMatch.model.Roles;
@@ -62,7 +63,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public Users addUser(UserResponseDto userResponseDto) {
        if(userRepository.existsByEmail(userResponseDto.getEmail())) {
-            throw new RuntimeException("Email already registered");
+            throw new AlreadyExistsException("Email already registered");
         }
 
         Users user = new Users();

@@ -20,16 +20,8 @@ public class TeamMemberId implements Serializable {
                 return team;
         }
 
-        public void setTeam(UUID team) {
-                this.team = team;
-        }
-
         public UUID getUser() {
                 return user;
-        }
-
-        public void setUser(UUID user) {
-                this.user = user;
         }
 
         @Override
