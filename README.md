@@ -11,6 +11,7 @@ A Spring Boot application for managing teams, team members, and join requests. H
 - [Entities](#entities)
 - [Endpoints](#endpoints)
 - [OpenApi](#openApi)
+- [Test Coverage](#test-coverage)
 ---
 
 ### **Tech Stack**
@@ -274,4 +275,9 @@ DB View after:
 
 ## **OpenApi**
 ![OpenAPi](src/main/resources/static/images/openApi.png)
+
+## **Test Coverage**
+
+![teams coverage](src/main/resources/static/images/coverage.png)
+![users coverage](src/main/resources/static/images/coverage-1.png)
 

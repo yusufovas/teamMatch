@@ -90,4 +90,8 @@ public class Users {
     public void setTeams(List<Team> teams) {
         this.teams = teams;
     }
+
+    public void setId(UUID uuid) {
+        this.id = uuid;
+    }
 }

@@ -36,4 +36,20 @@ public class UserResponseDto {
     public CharSequence getPassword() {
         return password;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 }
