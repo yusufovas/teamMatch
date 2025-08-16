@@ -8,6 +8,7 @@ import java.util.Map;
 
 public interface AuthService {
 
-    Map<String, String> signup (UserResponseDto userResponseDto);
+    Map<String, String> signup(UserResponseDto userResponseDto);
+
     String signin(LoginDto loginDto);
 }

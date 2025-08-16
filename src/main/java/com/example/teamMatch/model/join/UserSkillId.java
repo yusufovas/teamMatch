@@ -9,7 +9,8 @@ public class UserSkillId implements Serializable {
     private UUID user;
     private UUID skill;
 
-    public UserSkillId() {}
+    public UserSkillId() {
+    }
 
     public UserSkillId(UUID user, UUID skill) {
         this.user = user;

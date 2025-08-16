@@ -15,7 +15,8 @@ public class UserResponseDto {
     private String password;
 
 
-    public UserResponseDto() { }
+    public UserResponseDto() {
+    }
 
     public UserResponseDto(Users user) {
         this.id = user.getId();
@@ -25,10 +26,15 @@ public class UserResponseDto {
         List<String> skills;
         List<String> teamRoles;
     }
-    public UUID getId() { return id;}
+
+    public UUID getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
+
     public String getEmail() {
         return email;
     }

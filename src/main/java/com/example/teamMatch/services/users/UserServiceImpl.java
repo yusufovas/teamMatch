@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Users addUser(UserResponseDto userResponseDto) {
-       if(userRepository.existsByEmail(userResponseDto.getEmail())) {
+        if (userRepository.existsByEmail(userResponseDto.getEmail())) {
             throw new AlreadyExistsException("Email already registered");
         }
 
@@ -88,19 +88,19 @@ public class UserServiceImpl implements UserService {
                 });
 
 
-        if(!passwordEncoder.matches(updateUserDto.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(updateUserDto.getPassword(), user.getPassword())) {
             throw new ValidationException("Old password is incorrect");
         }
 
-        if(updateUserDto.getName() != null && !updateUserDto.getName().isBlank()) {
+        if (updateUserDto.getName() != null && !updateUserDto.getName().isBlank()) {
             user.setName(updateUserDto.getName());
         }
 
-        if(updateUserDto.getEmail() != null && !updateUserDto.getEmail().isBlank()) {
+        if (updateUserDto.getEmail() != null && !updateUserDto.getEmail().isBlank()) {
             user.setEmail(updateUserDto.getEmail());
         }
 
-        if(updateUserDto.getPassword() != null || !updateUserDto.getPassword().isBlank()) {
+        if (updateUserDto.getPassword() != null || !updateUserDto.getPassword().isBlank()) {
             user.setPassword(passwordEncoder.encode(updateUserDto.getPassword()));
         }
 
@@ -115,7 +115,8 @@ public class UserServiceImpl implements UserService {
 
         if (!user.getId().equals(userId)) {
             throw new NotFoundException("Ids do not match");
-        };
+        }
+        ;
 
         userRepository.delete(user);
     }
@@ -159,7 +160,7 @@ public class UserServiceImpl implements UserService {
                                 .toList(),
                         user.getSkills().stream()
                                 .map(skill -> new SkillIdDto(skill.getId(), skill.getTitle()))
-                                        .toList(),
+                                .toList(),
                         user.getTeams().stream()
                                 .map(Team::getName)
                                 .toList()))

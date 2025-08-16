@@ -12,7 +12,9 @@ import java.util.UUID;
 @Repository
 public interface TeamRepository extends JpaRepository<Team, UUID> {
     boolean existsByName(String name);
+
     Optional<Team> findByOwnerId(UUID ownerId);
+
     List<Team> findByStatus(TeamStatusEnum status);
 
 }

@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.Map;
 
 @Service
-public class AuthServiceImpl implements AuthService{
+public class AuthServiceImpl implements AuthService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
@@ -37,7 +37,7 @@ public class AuthServiceImpl implements AuthService{
     public Map<String, String> signup(UserResponseDto userResponseDto) {
         Users user = new Users();
 
-        if(userRepository.existsByEmail(userResponseDto.getEmail())) {
+        if (userRepository.existsByEmail(userResponseDto.getEmail())) {
             throw new UserAlreadyExistsException("User with this email was registered before");
         }
 

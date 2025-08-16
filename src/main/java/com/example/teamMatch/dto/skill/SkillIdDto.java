@@ -16,5 +16,7 @@ public class SkillIdDto {
         return skillId;
     }
 
-    public String getTitle() { return title; }
+    public String getTitle() {
+        return title;
+    }
 }

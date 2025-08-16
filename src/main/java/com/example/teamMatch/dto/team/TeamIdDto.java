@@ -17,8 +17,19 @@ public class TeamIdDto {
         this.status = status;
     }
 
-    public UUID getId() { return id; }
-    public String getName() { return name; }
-    public String getDescription() { return description; }
-    public TeamStatusEnum getStatus() { return status; }
+    public UUID getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public TeamStatusEnum getStatus() {
+        return status;
+    }
 }

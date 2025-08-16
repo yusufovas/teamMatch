@@ -12,7 +12,8 @@ public class UserRoleId implements Serializable {
     private Roles roleId;
 
 
-    public UserRoleId() { }
+    public UserRoleId() {
+    }
 
     public UserRoleId(Users userId, Roles roleId) {
         this.userId = userId;

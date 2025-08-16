@@ -78,7 +78,7 @@ public class TeamServiceImpl implements TeamService {
 
         UUID owner = team.getOwner().getId();
 
-        if(!owner.equals(ownerId)) {
+        if (!owner.equals(ownerId)) {
             throw new ValidationException("You are not the owner of the team " + team.getName());
         }
 

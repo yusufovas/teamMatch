@@ -12,7 +12,8 @@ public class TeamDto {
     private TeamStatusEnum status;
     private UserIdDto owner;
 
-    public TeamDto() {}
+    public TeamDto() {
+    }
 
     public TeamDto(UUID id, String name, String description, TeamStatusEnum status, UserIdDto owner) {
         this.id = id;
@@ -22,18 +23,43 @@ public class TeamDto {
         this.owner = owner;
     }
 
-    public UUID getId() { return id; }
-    public void setId(UUID id) { this.id = id; }
+    public UUID getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public String getName() {
+        return name;
+    }
 
-    public TeamStatusEnum getStatus() { return status; }
-    public void setStatus(TeamStatusEnum status) { this.status = status; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public UserIdDto getOwner() { return owner; }
-    public void setOwner(UserIdDto owner) { this.owner = owner; }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public TeamStatusEnum getStatus() {
+        return status;
+    }
+
+    public void setStatus(TeamStatusEnum status) {
+        this.status = status;
+    }
+
+    public UserIdDto getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserIdDto owner) {
+        this.owner = owner;
+    }
 }

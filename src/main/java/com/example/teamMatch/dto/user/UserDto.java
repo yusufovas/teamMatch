@@ -44,5 +44,8 @@ public class UserDto {
     public List<SkillIdDto> getSkills() {
         return skills;
     }
-    public List<String> getTeams() { return teams; }
+
+    public List<String> getTeams() {
+        return teams;
+    }
 }

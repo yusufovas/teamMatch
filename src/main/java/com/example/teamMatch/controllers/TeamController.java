@@ -51,7 +51,7 @@ public class TeamController {
 
     @DeleteMapping("/{teamId}")
     public ResponseEntity<Map<String, String>> removeTeam(@PathVariable UUID teamId,
-                                          @RequestHeader("Authorization") String authHeader) {
+                                                          @RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
         UUID ownerId = jwtUtils.getUserIdFromToken(token);
 

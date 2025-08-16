@@ -9,5 +9,6 @@ import java.util.*;
 
 public interface TeamMembersRepository extends JpaRepository<TeamMembers, TeamMemberId> {
     List<TeamMembers> findByTeam_Id(UUID teamId);
+
     List<TeamMembers> findByUser_Id(UUID userId);
 }

@@ -14,5 +14,8 @@ public class RoleIdDto {
     public UUID getRoleId() {
         return roleId;
     }
-    public String getName() { return name; }
+
+    public String getName() {
+        return name;
+    }
 }

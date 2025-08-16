@@ -39,7 +39,8 @@ public class Team {
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TeamJoinRequest> requests = new ArrayList<>();
 
-    public Team () { }
+    public Team() {
+    }
 
     public Team(String name, String description, Users owner, TeamStatusEnum status) {
         this.name = name;
